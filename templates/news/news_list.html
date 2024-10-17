@@ -1,0 +1,12 @@
+{% extends 'news/base.html' %}
+
+
+{% block content %}
+    <h1>All news lists</h1>
+    {% for new in all_news_list %}
+        <a href="{% url "news_detail_page" new.pk %}">
+            <li>{{ new.title }}  </li>
+        </a>
+    {% endfor %}
+    
+{% endblock content %}

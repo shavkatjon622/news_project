@@ -1,0 +1,7 @@
+{% extends 'news/base.html' %}
+
+{% block content %}
+    <h1>{{ news_detail_page.title }}</h1>
+    <p>Published time:  {{ news_detail_page.published_time }}</p>
+    <p>{{ news_detail_page.body | linebreaks }}</p>
+{% endblock content %}
