@@ -19,12 +19,13 @@ class NewsDetailView(DetailView):
     context_object_name = 'news_detail_page'
 
 def homePageView(request):
-    news = News.published.all()
+    news_list = News.published.all().order_by('-published_time')
     categories = Category.objects.all()
     context = {
-        'news': news,
+        'news_list': news_list,
         'categories': categories
     }
+    print(context['news_list'][0])
     return render(request, 'news/home.html', context)
 
 
