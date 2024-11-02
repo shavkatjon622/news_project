@@ -1,0 +1,16 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %} Xorij {% endblock title %}
+
+{% block content %}
+    {% for news in xorij_yangiliklari %}
+        <div class="clearfix col-md-6 float-md-end mb-3 ms-md-3">
+            <a href="{{ news.get_absolute_url }}">
+                <img src="{{ news.image.url }}" class="col-md-6 mb-3 ms-md-3" width="270px" height="144px" alt="">
+                <h4>{{ news.title }}</h4>
+            </a>
+            <p>{{ news.body | truncatewords:15 }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
