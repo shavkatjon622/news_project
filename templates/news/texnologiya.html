@@ -1,5 +1,6 @@
 {% extends 'news/base.html' %}
 {% load static %}
+{% load hitcount_tags %}
 
 {% block title %} Texnologiya {% endblock title %}
 
@@ -11,6 +12,7 @@
                 <h4>{{ news.title }}</h4>
             </a>
             <p>{{ news.body | truncatewords:15 }}</p>
+            <p>👁️ {% get_hit_count for news %} </p>
         </div>
     {% endfor %}
 {% endblock %}

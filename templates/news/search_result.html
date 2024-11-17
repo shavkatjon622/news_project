@@ -1,0 +1,15 @@
+{% extends 'news/base.html' %}
+{% load static %}
+
+{% block title %} Qidiruv sahifasi {% endblock title %}
+
+{% block content %}
+
+    <h2>Qidiruv natijalari</h2>
+    {% for yangilik in barcha_yangiliklar %}
+        <h3><a href="{{ yangilik.get_absolute_url }}" style="color:green">{{ yangilik.title }}</a></h3>
+        <p><a href="{% url 'news_detail_page' yangilik.slug %}"><img src="{{ yangilik.image.url }}" alt="yangilik rasmi" width="30%"></a></p>
+        <p>{{ yangilik.body | truncatewords:30 }}</p>
+    {% endfor %}
+
+{% endblock content %}

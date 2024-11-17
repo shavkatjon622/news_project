@@ -5,11 +5,12 @@
 {% block content %}
 
     <h2>Saytga kirish - Login</h2>
-    <p>Iltimos saytga kirish uchun quyidagi formani to`ldiring</p>
+    <p>Iltimos saytga kirish uchun quyidagi formani to`ldiring, <a href="{% url 'password_reset' %}" class="text-danger">Parolni unutdingiz?</a></p>
 
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-login">Login</button>
+        <button type="submit" class="btn btn-info">Login</button>
     </form>
+    <p><a href="{% url 'user_register' %}" style="color:green">Ro`yxatdan o`tish</a></p>
 
 {% endblock content %}

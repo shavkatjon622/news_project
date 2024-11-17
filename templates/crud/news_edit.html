@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'news/base.html' %}
+{% block title %} {{ news.title }} {% endblock title %}
+{% block content %}
 
-</body>
-</html>
+    <h2 class="text-center">Joriy yangilikni tahrirlash</h2>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-info">Tasdiqlayman</button>
+    </form>
+
+
+{% endblock content %}

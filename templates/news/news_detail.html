@@ -1,8 +1,50 @@
 {% extends 'news/base.html' %}
+{% load static %}
+{% load hitcount_tags %}
+
 {% block title %} {{ news.title }} {% endblock title %}
 {% block content %}
     <h1>{{ news.title }}</h1>
     <img src="{{ news.image.url }}" alt="bu ablah rasmlar chiqmayapti">
-    <p>Published time:  {{ news.published_time }}</p>
+    <p>Published time:  {{ news.published_time }} | 👁️ {% get_hit_count for news %} | <i class='fas fa-comment-alt'></i> {{ comment_count }}</p>
     <p>{{ news.body | linebreaks }}</p>
+
+    {% if request.user.is_superuser and request.user.is_superuser %}
+        <div class="card-footer text-center">
+            <a href="{% url 'news_update' news.slug %}">Tahrirlash</a>|
+            <a href="{% url 'news_delete' news.slug %}">O`chirish</a>|
+        </div>
+    {% endif %} <br>
+    {% if comments %}
+        <h3>Bu yangilikka {{ comment_count }} ta izoh qoldirilgan.</h3>
+    {% endif %}
+    {% for comment in comments %}
+        <div class="comments" style="padding:10px">
+            <p class="font-weight-blod">
+                {{ comment.user }}
+                <span class="text-muted font-weight-normal">{{ comment.created_time }}</span>
+            </p>
+            {{ comment.body | linebreaks }}
+        </div>
+    {% endfor %}
+
+    {% if request.user.is_authenticated %}
+        <div class="col-md-8 card mb-4 mt-3">
+            <div class="card-body">
+                <h3>Izoh qoldirish</h3>
+                <form method="post" style="margin-top: 1.3em">{% csrf_token %}
+                   {{ comment_form.as_p }}
+                   <button type="submit" class="btn btn-primary btn-lg">Yuborish</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="card-body">
+            <p class="text-danger">
+                Faqat ro`yxatdan o`tgan foydalanuvchilar izoh qoldirishi mumkin.
+            </p>
+            <p>Izoh qoldirish uchun <a href="{% url 'user_register' %}" class="text-primary">ro`yxatdan o`ting</a> yoki <a href="{% url 'login' %}" class="text-primary">profilingizga kiring</a></p>
+        </div>
+    {% endif %}
+
 {% endblock content %}

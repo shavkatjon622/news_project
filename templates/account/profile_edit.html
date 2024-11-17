@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "news/base.html" %}
+{% load static %}
+{% block title %} Foydalanuvchi profilini tahrirlash {% endblock title %}
 
-</body>
-</html>
+{% block content %}
+
+    <h1>Foydalanuvchi malumotlarini o`zgartirish</h1>
+    <p>O`zingiz haqingizdagi malumotlarni quyidagi forma orqali o`zgartirishingiz mumkin:</p>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{user_form.as_p}}
+        {{profile_form.as_p}}
+        <button type="submit" class="btn btn-info">Saqlash</button>
+    </form>
+
+{% endblock content %}

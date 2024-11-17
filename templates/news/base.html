@@ -6,15 +6,16 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/font-awesome.min.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/animate.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/font.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/li-scroller.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/slick.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/jquery.fancybox.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/theme.css' %}">
-<link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/animate.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/font.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/li-scroller.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/slick.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/jquery.fancybox.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/theme.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}">
 </head>
 <body>
 <div id="preloader">
@@ -31,9 +32,18 @@
               <li><a href="{% url 'home_page' %}">Home</a></li>
               <li><a href="#">About</a></li>
               <li><a href="{% url 'contact_page' %}">Contact</a></li>
+              {% if user.is_authenticated and request.user.is_superuser %}
+                <li><a href="{% url 'admin_page' %}">Admin sahifa</a></li>
+              {% endif %}
             </ul>
           </div>
           <div class="header_top_right">
+            {% if request.user.is_authenticated %}
+            <p><a href="{% url 'logout' %}" style="color:red">Chiqish</a></p>
+            <p><a href="{% url 'user_profile' %}" style="color : yellow">Mening profilim</a></p>
+            {% else %}
+            <p><a href="{% url 'login' %}" style="color : yellow">Saytga kirish</a></p>
+            {% endif %}
             <p>{% now "jS F Y H:i" %}</p>
           </div>
         </div>
@@ -59,6 +69,11 @@
           <li><a href="{% url 'tecnology_news_page' %}">Texnologiya</a></li>
           <li><a href="{% url 'sport_news_page' %}">Sport</a></li>
           <li><a href="{% url 'contact_page' %}">Contact Us</a></li>
+          <li>
+            <form method="get" action="{% url 'search_results' %}">
+              <input type="search" name="q" placeholder="Qidiruv...." class="form-control">
+            </form>
+          </li>
         </ul>
       </div>
     </nav>

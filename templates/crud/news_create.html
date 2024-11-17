@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'news/base.html' %}
+{% block title %} Yangilik qo`shish {% endblock title %}
+{% block content %}
 
-</body>
-</html>
+    <h2 class="text-center">Yangilik qo`shish</h2>
+    <form method="post" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-info">Yangilik qo`shish</button>
+    </form>
+
+{% endblock content %}
