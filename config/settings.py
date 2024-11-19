@@ -9,10 +9,19 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+# production yani deploy qilishdan avval unga tayyorgaliklar ko`riladi. Bular .env file yaratish, secret_keyni yashirish, debugni yashirib false qilish,
+# ruxsat berilgan hostlarni qoldirib qolganlarni yo`q qilib qo`yish, .env file kabi .gitignore fileni yaratish hamda unga githubga yuklanmaydigan qismlarni kiritish
+# git ignoreni tayyor shablonini git ignore template github repodan olsa boladi.  pip freeze > requirements.txt komandasi orqali requirements.txt yaratiladi
+# python manage.py collectstatic komandasi orqali stattic filelarni bir yerga jamlab olamiz. Bu buyuruqdan keyin ko`plab xatolar chiqishi mumkin ularni togrilab papkani ochirib qaytadan collect static qilib yigib olamiz
+# static file lar uchun whitenoise degan tashqi kutubxonadan foydalansak bo`ladi. Agar ularni topishda muammo bo`lsa. uni app larni ichiga qo`shib qo`yish kerak boladi whitenoise.runserver_nostatic ko`rinishida
+# middleware ichiga ham whitenoise.middleware.WhiteNoiseMiddleware korinishada security middlewaredan keyin yozishimiz kerak
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage" ko`rinishida settings.py ga ham qo`shib qo`yamiz
+# .env fileni ham serverga yuklagach kiritib qoyishimiz zarur aks holda hostingda loyihamizga run bera olmaymiz
 
 from pathlib import Path
+from decouple import config
 
-from django.conf.global_settings import EMAIL_BACKEND
+from django.conf.global_settings import EMAIL_BACKEND, LOCALE_PATHS
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,12 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2*eypt(b&i5hdh%4@0o4iv_9r8=@k!ip+!amytwn%%5y&-%jt&'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -42,11 +51,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'news_app',
     'hitcount',
+    'modeltranslation',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -109,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uz-uz'
 
 TIME_ZONE = 'Asia/Tashkent'
 
@@ -117,13 +128,27 @@ USE_I18N = True
 
 USE_TZ = True
 
+from django.utils.translation import gettext_lazy as _
+
+LANGUAGES = [
+    ('uz', _('Uzbek')),
+    ('ru', _('Russian')),
+    ('en', _('English'))
+]
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'uz'
+
+LOCALE_PATHS = BASE_DIR, 'locale'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # debug false bo`lganda ishlaydi
+STATICFILES_DIRS = [BASE_DIR / 'static']  # debug true bo`lganda ishlaydi
+
+
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',

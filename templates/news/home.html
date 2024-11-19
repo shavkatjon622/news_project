@@ -26,8 +26,8 @@
             <ul class="latest_postnav">
                 {% for new in news_list %}
               <li>
-                <div class="media"> <a href="{{ news.get_absolute_url }}" class="media-left"> <img alt="" src="{{ new.image.url }}"> </a>
-                  <div class="media-body"> <a href="{{ news.get_absolute_url }}" class="catg_title"> {{ new.title | truncatewords:5 }}</a>
+                <div class="media"> <a href="{{ new.get_absolute_url }}" class="media-left"> <img alt="" src="{{ new.image.url }}"> </a>
+                  <div class="media-body"> <a href="{{ new.get_absolute_url }}" class="catg_title"> {{ new.title | truncatewords:5 }}</a>
                     <p>👁️ {% get_hit_count for new %} </p>
                   </div>
                 </div>
